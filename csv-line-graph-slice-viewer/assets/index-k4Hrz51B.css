@@ -1,0 +1,1 @@
+html,body{width:100dvw;height:100dvh;margin:0;display:flex}#app{width:calc(100% - 32px);height:fit-content;min-height:calc(100% - 32px);margin:16px;display:flex;flex-direction:column}button{margin-bottom:16px}canvas{margin-bottom:16px;border:2px solid}input[type=range],p{margin:0 0 16px}a{margin-bottom:16px}
