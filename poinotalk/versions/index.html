@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../assets/favicon.svg" rel="icon" type="image/svg+xml">
+  <title>PoinoTalk バージョン一覧</title>
+</head>
+<body>
+  <h1>PoinoTalk バージョン一覧</h1>
+  <div id="versions">
+    <p>バージョンが見つかりません</p>
+  </div>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap');
+
+    * {
+      font-family: "Zen Maru Gothic", serif;
+      font-weight: 700;
+    }
+
+    body {
+      margin: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      background-color: #CEEBEA;
+    }
+
+    #versions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    h1,
+    p {
+      margin: 0;
+      color: #3E7F7D;
+    }
+
+    a {
+      text-decoration-color: #3E7F7D;
+    }
+  </style>
+  <script>
+    fetch('../versions.txt')
+    .then((res) => res.text())
+    .then((text) => {
+      const lines = text.split('\n').filter((line) => line !== '')
+      const versions = document.querySelector('#versions')
+
+      if (versions && (lines.length > 0)) {
+        versions.innerHTML = ''
+      }
+
+      lines
+      .forEach((line) => {
+        const p = document.createElement('p')
+        p.innerText = `PoinoTalk ${line}`
+
+        const a = document.createElement('a')
+        a.href = `../${line}`
+
+        a.appendChild(p)
+        versions?.appendChild(a)
+      })
+    })
+    .catch(console.error)
+  </script>
+</body>
+</html>
