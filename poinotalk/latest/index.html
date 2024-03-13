@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../assets/favicon.svg" rel="icon" type="image/svg+xml">
+  <title>PoinoTalk リダイレクト</title>
+</head>
+<body>
+  <h1>PoinoTalkは準備中です</h1>
+  <p>Twitterでリリース告知をお待ち下さい</p>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap');
+
+    * {
+      font-family: "Zen Maru Gothic", serif;
+      font-weight: 700;
+    }
+
+    body {
+      margin: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      background-color: #CEEBEA;
+    }
+
+    h1,
+    p {
+      margin: 0;
+      color: #3E7F7D;
+    }
+  </style>
+  <script>
+    fetch('../versions.txt')
+    .then((res) => res.text())
+    .then((text) => {
+      const lines = text.split('\n').filter((line) => line !== '')
+
+      if (lines.length > 0) {
+        const line = lines[0]
+        location.href = new URL(`../${line}`, location.href).href
+      }
+    })
+    .catch(console.error)
+  </script>
+</body>
+</html>
