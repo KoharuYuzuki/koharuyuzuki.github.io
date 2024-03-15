@@ -32,14 +32,30 @@
     }
   </style>
   <script>
-    fetch('../versions.txt')
-    .then((res) => res.text())
-    .then((text) => {
-      const lines = text.split('\n').filter((line) => line !== '')
+    function isHash (value) {
+      return (
+        ![undefined, null].includes(value) &&
+        (Object.getPrototypeOf(value).constructor.name === 'Object')
+      )
+    }
 
-      if (lines.length > 0) {
-        const line = lines[0]
-        location.href = new URL(`../${line}`, location.href).href
+    function isString (value) {
+      return (typeof value === 'string' || value instanceof String)
+    }
+
+    fetch('../versions.json')
+    .then((res) => res.json())
+    .then((versions) => {
+      if (!isHash(versions)) return
+
+      const found = Object.keys(versions).find((version) => {
+        const url = versions[version]
+        return isString(url)
+      })
+
+      if (found !== undefined) {
+        const url = versions[found]
+        location.href = url
       }
     })
     .catch(console.error)

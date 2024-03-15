@@ -44,27 +44,43 @@
     }
   </style>
   <script>
-    fetch('../versions.txt')
-    .then((res) => res.text())
-    .then((text) => {
-      const lines = text.split('\n').filter((line) => line !== '')
-      const versions = document.querySelector('#versions')
+    function isHash (value) {
+      return (
+        ![undefined, null].includes(value) &&
+        (Object.getPrototypeOf(value).constructor.name === 'Object')
+      )
+    }
 
-      if (versions && (lines.length > 0)) {
-        versions.innerHTML = ''
-      }
+    function isString (value) {
+      return (typeof value === 'string' || value instanceof String)
+    }
 
-      lines
-      .forEach((line) => {
+    fetch('../versions.json')
+    .then((res) => res.json())
+    .then((versions) => {
+      if (!isHash(versions)) return
+
+      const parent = document.querySelector('#versions')
+
+      Object.keys(versions).forEach((version) => {
+        const url = versions[version]
+        if (!isString(url)) return
+
         const p = document.createElement('p')
-        p.innerText = `PoinoTalk ${line}`
+        p.innerText = `PoinoTalk ${version}`
 
         const a = document.createElement('a')
-        a.href = `../${line}`
+        a.href = url
 
         a.appendChild(p)
-        versions?.appendChild(a)
+        parent?.appendChild(a)
       })
+
+      if (parent && (parent.querySelectorAll('& > a').length > 0)) {
+        parent.querySelectorAll('& > p').forEach((child) => {
+          child.remove()
+        })
+      }
     })
     .catch(console.error)
   </script>
