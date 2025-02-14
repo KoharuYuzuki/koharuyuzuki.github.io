@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../assets/favicon.svg" rel="icon" type="image/svg+xml">
+  <title>PoinoSing バージョン一覧</title>
+</head>
+<body>
+  <h1>PoinoSing バージョン一覧</h1>
+  <div id="versions">
+    <p>バージョンが見つかりません</p>
+  </div>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap');
+
+    * {
+      font-family: "Zen Maru Gothic", serif;
+      font-weight: 700;
+    }
+
+    body {
+      margin: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      background-color: #75C6C3;
+    }
+
+    #versions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    h1,
+    p {
+      margin: 0;
+      color: #2A2A2A;
+    }
+
+    a {
+      text-decoration-color: #2A2A2A;
+    }
+  </style>
+  <script>
+    function isHash (value) {
+      return (
+        ![undefined, null].includes(value) &&
+        (Object.getPrototypeOf(value).constructor.name === 'Object')
+      )
+    }
+
+    function isString (value) {
+      return (typeof value === 'string' || value instanceof String)
+    }
+
+    fetch('../versions.json')
+    .then((res) => res.json())
+    .then((versions) => {
+      if (!isHash(versions)) return
+
+      const parent = document.querySelector('#versions')
+
+      Object.keys(versions).forEach((version) => {
+        const url = versions[version]
+        if (!isString(url)) return
+
+        const p = document.createElement('p')
+        p.innerText = `PoinoSing ${version}`
+
+        const a = document.createElement('a')
+        a.href = url
+
+        a.appendChild(p)
+        parent?.appendChild(a)
+      })
+
+      if (parent && (parent.querySelectorAll('& > a').length > 0)) {
+        parent.querySelectorAll('& > p').forEach((child) => {
+          child.remove()
+        })
+      }
+    })
+    .catch(console.error)
+  </script>
+</body>
+</html>
